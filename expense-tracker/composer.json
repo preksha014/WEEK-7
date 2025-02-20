@@ -1,0 +1,15 @@
+{
+    "name": "hp/expense-tracker",
+    "autoload": {
+        "psr-4": {
+            "Core\\": "Core/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Preksha",
+            "email": "ranapreksha8@gmail.com"
+        }
+    ],
+    "require": {}
+}
