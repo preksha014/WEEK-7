@@ -4,6 +4,8 @@ use Core\Validator;
 $config = require base_path('config.php');
 $db = new Database($config['database']);
 
+$groups=$db->query("SELECT * FROM groups")->get();
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $errors = [];
     if (!Validator::string($_POST['name'], 1, 1000)) {
@@ -16,11 +18,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $errors['date'] = "Enter valid Date";
     }
     
+    if(empty($_POST['group_id'])){
+        $errors['group_id'] = "Please select a group";
+    }
 
     if (!empty($errors)) {
         return view("expenses/create.view.php", [
             'heading' => 'Add Expense',
-            'errors' => $errors
+            'errors' => $errors,
+            'groups'=>$groups,
         ]);
     }
      //dd($_POST);

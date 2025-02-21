@@ -60,7 +60,11 @@
                     <?php foreach ($groups as $group): ?>
                         <option value="<?= $group['id'] ?>"><?= htmlspecialchars($group['name']) ?></option>
                     <?php endforeach; ?>
+                    
                 </select>
+                <?php if (isset($errors['group_id'])): ?>
+                      <p class="text-red-500 text-xs mt-1"><?= htmlspecialchars($errors['group_id']) ?></p>
+                <?php endif; ?>
             </div>
 
             <!-- Submit Button -->

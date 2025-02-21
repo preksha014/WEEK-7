@@ -13,6 +13,9 @@
                 <?php if (isset($errors['name'])): ?>
                     <p class="text-red-500 text-xs"><?= $errors['name'] ?></p>
                 <?php endif; ?>
+                <?php if (isset($errors['duplicate'])): ?>
+                    <p class="text-red-500 text-xs"><?= $errors['duplicate'] ?></p>
+                <?php endif; ?>
             </div>
 
             <button type="submit"
