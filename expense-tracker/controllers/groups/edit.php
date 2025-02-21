@@ -6,7 +6,7 @@ $config = require base_path('config.php');
 $db = new Database($config['database']);
 
 $groups = $db->query('select * from groups where id = :id', [
-    'id' => $_GET['id']
+    'id' => $_POST['id']
 ])->findOrFail();
 //dd($_GET['id']);
 // dd($groups);

@@ -9,9 +9,21 @@
             <div class="mt-4 flex items-center justify-between bg-gray-100 p-4 rounded-lg shadow">
                 <span class="font-semibold text-gray-800"><?= $group['name'] ?></span>
                 <div class="flex space-x-2">
-                <footer >
-            <a href="/groups/edit?id=<?= $group['id'] ?>" class="inline-flex justify-center rounded-md border border-transparent bg-gray-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Edit</a>
-        </footer>
+                    <form method="POST" action="/groups/edit">
+                        <input type="hidden" name="id" value="<?= $group['id'] ?>">
+                        <button type="submit"
+                            class="inline-flex items-center justify-center rounded-md bg-gray-500 px-4 py-2 text-sm font-medium text-white shadow hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
+                            Edit
+                        </button>
+                    </form>
+                    <form method="POST" action="/groups">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="id" value="<?= $group['id'] ?>">
+                        <button type="submit"
+                            class="inline-flex items-center justify-center rounded-md bg-gray-500 px-4 py-2 text-sm font-medium text-white shadow hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500">
+                            Delete
+                        </button>
+                    </form>
                 </div>
             </div>
 

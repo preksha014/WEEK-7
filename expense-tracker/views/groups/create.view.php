@@ -4,7 +4,7 @@
 
 <main>
     <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <form class="max-w-sm mx-auto" method="POST" action="/groups">
+        <form class="bg-white shadow-md rounded-lg p-6 max-w-sm mx-auto" method="POST" action="/groups">
             <div class="mb-5">
                 <label for="text" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Group
                     Name</label>
