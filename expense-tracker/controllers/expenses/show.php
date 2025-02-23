@@ -7,8 +7,7 @@ $expenses = $db->query('SELECT e.id, e.name, e.amount, e.date, g.name AS categor
                         FROM expenses e
                         JOIN groups g ON e.group_id = g.id
                         ORDER BY e.date DESC')->get();
-
-
+                        
 view("expenses/show.view.php",[
     'heading'=>'Expenses',
     'expenses'=>$expenses,

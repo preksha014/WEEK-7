@@ -32,5 +32,45 @@ class Database
         }
         return $result;
     }
+
+    public function select($table, $columns = ['*'], $where = []) {
+        $columnList = implode(", ", $columns);
+        $sql = "SELECT $columnList FROM $table";
+        //dd($sql);
+        if (!empty($where)) {
+            $whereClause = implode(" AND ", array_map(fn($key) => "$key = :$key", array_keys($where)));
+            $sql .= " WHERE $whereClause";
+        }
+        //dd($whereClause);
+        $statement = $this->connection->prepare($sql);
+        $statement->execute($where);
+        return $statement->fetchAll();
+    }
+
+    public function insert($table,$data){
+        $columns=implode(',',array_keys($data));
+        //dd($columns);
+        $placeholders=implode(', :',array_keys($data));
+        //dd($placeholders);
+        $sql="INSERT INTO $table ($columns) VALUES (:$placeholders)";
+        //dd($sql);
+        $this->statement = $this->connection->prepare($sql);
+        $this->statement->execute($data);
+    }
+
+    public function update($table, $data, $id) {
+        $set = implode(", ", array_map(fn($key) => "$key = :$key", array_keys($data)));
+        //dd($set);
+        $sql = "UPDATE $table SET $set WHERE id = :id";
+        $stmt = $this->connection->prepare($sql);
+        //$data['id'] = $id;
+        return $stmt->execute(['id'=>$id] + $data);
+    }
+
+    public function delete($table, $id) {
+        $sql = "DELETE FROM $table WHERE id = :id";
+        $this->statement = $this->connection->prepare($sql);
+        $this->statement->execute(['id' => $id]);
+    }
 }
 ?>

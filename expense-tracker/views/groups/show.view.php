@@ -3,10 +3,10 @@
 <?php require BASE_PATH . "views/partials/banner.php"; ?>
 
 <main>
-    <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-
+<div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+    <div>
         <?php foreach ($groups as $group): ?>
-            <div class="mt-4 flex items-center justify-between bg-gray-100 p-4 rounded-lg shadow">
+            <div class="mt-4 flex items-center justify-between bg-gray-100 p-4 rounded-lg shadow transition duration-200 ease-in-out transform hover:shadow-lg hover:bg-gray-200 hover:scale-103">
                 <span class="font-semibold text-gray-800"><?= $group['name'] ?></span>
                 <div class="flex space-x-2">
                     <form method="POST" action="/groups/edit">
@@ -26,8 +26,8 @@
                     </form>
                 </div>
             </div>
-
         <?php endforeach; ?>
+        
         <div class="mt-4">
             <a href="/groups/create">
                 <button class="mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -35,8 +35,9 @@
                 </button>
             </a>
         </div>
-
     </div>
+</div>
+
 
 </main>
 <?php require BASE_PATH . "views/partials/footer.php"; ?>

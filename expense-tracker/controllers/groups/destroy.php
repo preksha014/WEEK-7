@@ -4,13 +4,15 @@ use Core\Database;
 $config = require base_path('config.php');
 $db = new Database($config['database']);
 
-$groups = $db->query('select * from groups where id = :id', [
-    'id' => $_POST['id']
-])->findOrFail();
+$groups=$db->select('groups',['*'],['id'=>$_POST['id']]);
+// $groups = $db->query('select * from groups where id = :id', [
+//     'id' => $_POST['id']
+// ])->findOrFail();
 
-$db->query('delete from groups where id = :id', [
-    'id' => $_POST['id']
-]);
+$db->delete('groups',$_POST['id']);
+// $db->query('delete from groups where id = :id', [
+//     'id' => $_POST['id']
+// ]);
 
 header('location: /groups');
 exit();

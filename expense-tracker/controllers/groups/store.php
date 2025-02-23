@@ -4,7 +4,8 @@ use Core\Validator;
 $config = require base_path('config.php');
 $db = new Database($config['database']);
 
-$groups = $db->query("select * from groups")->get();
+$groups=$db->select('groups');
+// $groups = $db->query("select * from groups")->get();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $errors = [];
@@ -12,10 +13,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $errors['name'] = "Name is required";
     }
 
-    $existingGroup = $db->query("
-    SELECT id FROM groups WHERE name = :name", [
-        'name' => $_POST['name']
-    ])->find();
+    $existingGroup=$db->select('groups',['*'],['name'=>$_POST['name']]);
+    // $existingGroup = $db->query("
+    // SELECT id FROM groups WHERE name = :name", [
+    //     'name' => $_POST['name']
+    // ])->get();
 
     if ($existingGroup) {
         $errors['duplicate'] = "This group name already exists.";
@@ -28,9 +30,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         ]);
     }
 
-    $db->query("INSERT INTO groups(name) VALUES(:name)", [
-        'name' => $_POST['name'],
+    $db->insert('groups',['name' => $_POST['name'],
     ]);
+    
+    // $db->query("INSERT INTO groups(name) VALUES(:name)", [
+    //     'name' => $_POST['name'],
+    // ]);
 }
 
 header('location: /groups');
