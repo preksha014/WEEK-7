@@ -2,7 +2,7 @@
 use Core\Database;
 use Core\Validator;
 
-header('Content-Type: application/json');
+//header('Content-Type: application/json');
 
 $config = require base_path('config.php');
 $db = new Database($config['database']);
@@ -22,15 +22,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     // If errors exist, return JSON response
-    if (!empty($errors)) {
-        echo json_encode(['status' => 'error', 'errors' => $errors]);
-        exit;
-    }
+    // if (!empty($errors)) {
+    //     echo json_encode(['status' => 'error', 'errors' => $errors]);
+    //     exit;
+    // }
 
     // Insert new group
     $db->insert('groups', ['name' => $_POST['name']]);
 
     // Return success response
-    echo json_encode(['status' => 'success', 'message' => 'Group added successfully']);
-    exit;
+    // echo json_encode(['status' => 'success', 'message' => 'Group added successfully']);
+    // exit;
+
+    header('location: /groups');
 }

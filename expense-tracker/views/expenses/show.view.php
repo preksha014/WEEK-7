@@ -22,7 +22,7 @@
                         <form method="POST" action="/expenses/edit">
                             <input type="hidden" name="id" value="<?= $expense['id'] ?>">
                             <button type="submit"
-                                class="inline-flex items-center justify-center rounded-md bg-gray-500 px-4 py-2 text-sm font-medium text-white shadow hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
+                            class="inline-flex items-center justify-center rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
                                 Edit
                             </button>
                         </form>
@@ -30,7 +30,7 @@
                             <input type="hidden" name="_method" value="DELETE">
                             <input type="hidden" name="id" value="<?= $expense['id'] ?>">
                             <button type="submit"
-                                class="inline-flex items-center justify-center rounded-md bg-gray-500 px-4 py-2 text-sm font-medium text-white shadow hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500">
+                            class="inline-flex items-center justify-center rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
                                 Delete
                             </button>
                         </form>

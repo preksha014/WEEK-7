@@ -4,7 +4,7 @@
 
 <main>
     <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <form id="add-group-form" class="bg-white shadow-md rounded-lg p-6 max-w-sm mx-auto">
+        <form id="add-group-form" class="bg-white shadow-md rounded-lg p-6 max-w-sm mx-auto" method="POST" action="/groups">
             <div id="error-message" class="hidden mb-4 p-4 text-sm text-red-700 bg-red-100 rounded-lg"></div>
             <div class="mb-5">
                 <label for="text" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Group
@@ -25,29 +25,4 @@
         </form>
 </main>
 
-<script>
-    $(document).ready(function () {
-        $('#add-group-form').validate({
-            rules: { text: { required: true } },
-            messages: { text: { required: 'Group name is required.' } },
-            submitHandler: function (form) {
-                $.ajax({
-                    url: '/groups',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({ name: $('#text').val().trim() }),
-                    success: function (response) {
-                        if (response.success) {
-                            $('#success-message').text('Group added successfully!').removeClass('hidden');
-                            form.reset();
-                        } else {
-                            $('#error-duplicate').text(response.error === 'duplicate' ? 'Group name already exists.' : 'An error occurred.');
-                        }
-                    }
-                });
-            }
-        });
-    });
-
-</script>
 <?php require BASE_PATH . "views/partials/footer.php"; ?>
