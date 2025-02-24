@@ -4,7 +4,7 @@
 
 <main>
     <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <form class="bg-white shadow-md rounded-lg p-6 max-w-sm mx-auto" method="POST" action="/groups">
+        <form id="edit-group-form" class="bg-white shadow-md rounded-lg p-6 max-w-sm mx-auto" method="POST" action="/groups">
             <!-- Hidden Fields for PATCH Request -->
             <input type="hidden" name="_method" value="PATCH">
             <input type="hidden" name="id" value="<?= htmlspecialchars($groups['id']) ?>">
@@ -40,5 +40,28 @@
             </div>
         </form>
     </div>
+    
+<script>
+document.getElementById("edit-group-form").addEventListener("submit", function(event) {
+    event.preventDefault();
+    
+    let formData = new FormData(this);
+    
+    fetch (BASE_PATH.("controllers/groups/update.php"), {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            window.location.href = "/groups"; // Redirect after success
+        } else {
+            document.getElementById("error-message").textContent = data.error;
+            document.getElementById("error-message").classList.remove("hidden");
+        }
+    })
+    .catch(error => console.error("Error:", error));
+});
+</script>
 </main>
 <?php require BASE_PATH . "views/partials/footer.php"; ?>

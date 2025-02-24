@@ -8,6 +8,7 @@ $groups=$db->select('groups');
 // $groups=$db->query("SELECT * FROM groups")->get();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    header("Content-Type: application/json");
     $errors = [];
     if (!Validator::string($_POST['name'], 1, 1000)) {
         $errors['name'] = "Name is required";
@@ -24,11 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     if (!empty($errors)) {
-        return view("expenses/create.view.php", [
-            'heading' => 'Add Expense',
-            'errors' => $errors,
-            'groups'=>$groups,
-        ]);
+        echo json_encode(['status' => 'error', 'errors' => $errors]);
     }
     //dd($_POST);
     $db->insert('expenses',[
@@ -37,6 +34,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         'date' => $_POST['date'],
         'group_id' =>$_POST['group_id'],
     ]);
+
+    echo json_encode(['status'=> 'success']);
     // $db->query("INSERT INTO expenses(name, amount, group_id, date) VALUES (:name,:amount,:group_id,:date)", [
     //     'name' => $_POST['name'],
     //     'amount' => $_POST['amount'],

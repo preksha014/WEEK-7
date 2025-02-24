@@ -2,6 +2,8 @@
 use Core\Database;
 use Core\Validator;
 
+header('Content-Type: application/json');
+
 $config = require base_path('config.php');
 $db = new Database($config['database']);
 
@@ -16,11 +18,8 @@ $errors = [];
 
 // if no validation errors, update the record in the expense database table.
 if (!empty($errors)) {
-    return view('expenses/edit.view.php', [
-        'heading' => 'Edit Expense',
-        'errors' => $errors,
-        'expense' => $expense,
-    ]);
+    echo json_encode(['success' => false, 'errors' => $errors]);
+    exit;
 }
 
 // Update the expense
@@ -41,5 +40,8 @@ $db->update('expenses', [
 // ]);
 
 // redirect the user
-header('location: /expenses');
-die();
+// header('location: /expenses');
+// die();
+echo json_encode(['success'=> true]);
+exit;
+?>

@@ -77,5 +77,45 @@
         </form>
 
     </div>
+    <script>
+        $(document).ready(function () {
+            $("#add-expense-form").submit(function (event) {
+                event.preventDefault(); // Prevent default form submission
+
+                let expenseName = $("#expense-name").val();
+                let amount = $("#amount").val();
+                let date = $("#date").val();
+                let groupId = $("#group").val();
+                let formData = { name: expenseName, amount: amount, date: date, group_id: groupId };
+
+                $.ajax({
+                    url: "/expenses", // API for handling expense creation
+                    type: "POST",
+                    data: formData,
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.status === "success") {
+                            $("#success-message").text(response.message).removeClass("hidden"); // Show success message
+                            $("#error-name, #error-amount, #error-date, #error-group").text(""); // Clear errors
+                            $("#expense-name, #amount, #date, #group").val(""); // Clear input fields
+
+                            setTimeout(() => {
+                                window.location.href = "/expenses"; // Redirect after 1.5 sec
+                            }, 1500);
+                        } else {
+                            // Show validation errors
+                            $("#error-name").text(response.errors.name ? response.errors.name : "");
+                            $("#error-amount").text(response.errors.amount ? response.errors.amount : "");
+                            $("#error-date").text(response.errors.date ? response.errors.date : "");
+                            $("#error-group").text(response.errors.group_id ? response.errors.group_id : "");
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error:", error);
+                    }
+                });
+            });
+        });
+    </script>
 </main>
 <?php require base_path("views/partials/footer.php"); ?>
