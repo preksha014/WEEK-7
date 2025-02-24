@@ -4,7 +4,8 @@
 
 <main>
     <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <form class="bg-white shadow-md rounded-lg p-6 max-w-md mx-auto" method="POST" action="/expenses">
+        <form id="add-expense-form" class="bg-white shadow-md rounded-lg p-6 max-w-md mx-auto" method="POST" action="/expenses">
+            <div id="success-message" class="hidden mb-4 p-4 text-sm text-green-700 bg-green-100 rounded-lg"></div>
             <!-- Expense Name -->
             <div class="mb-4">
                 <label for="expense-name" class="block text-sm font-medium text-gray-900 dark:text-white mb-1">
@@ -15,7 +16,7 @@
                    dark:bg-gray-700 dark:border-gray-600 dark:text-white 
                    dark:focus:ring-blue-500 dark:focus:border-blue-500"  />
                 <?php if (isset($errors['name'])): ?>
-                    <p class="text-red-500 text-xs mt-1"><?= htmlspecialchars($errors['name']) ?></p>
+                    <p id="error-name" class="text-red-500 text-xs mt-1"><?= isset($errors['name']) ? htmlspecialchars($errors['name']) : '' ?></p>
                 <?php endif; ?>
             </div>
 
@@ -29,7 +30,7 @@
                    dark:bg-gray-700 dark:border-gray-600 dark:text-white 
                    dark:focus:ring-blue-500 dark:focus:border-blue-500"  />
                 <?php if (isset($errors['amount'])): ?>
-                    <p class="text-red-500 text-xs mt-1"><?= htmlspecialchars($errors['amount']) ?></p>
+                    <p id="error-amount" class="text-red-500 text-xs mt-1"><?= isset($errors['amount']) ? htmlspecialchars($errors['amount']) : '' ?></p>
                 <?php endif; ?>
             </div>
 
@@ -43,7 +44,7 @@
                    dark:bg-gray-700 dark:border-gray-600 dark:text-white 
                    dark:focus:ring-blue-500 dark:focus:border-blue-500"  />
                 <?php if (isset($errors['date'])): ?>
-                    <p class="text-red-500 text-xs mt-1"><?= htmlspecialchars($errors['date']) ?></p>
+                    <p id="error-date" class="text-red-500 text-xs mt-1"><?= isset($errors['date']) ? htmlspecialchars($errors['date']) : '' ?></p>
                 <?php endif; ?>
             </div>
 
@@ -63,7 +64,7 @@
                     
                 </select>
                 <?php if (isset($errors['group_id'])): ?>
-                      <p class="text-red-500 text-xs mt-1"><?= htmlspecialchars($errors['group_id']) ?></p>
+                      <p id="error-group" class="text-red-500 text-xs mt-1"><?= isset($errors['group_id']) ? htmlspecialchars($errors['group_id']) : '' ?></p>
                 <?php endif; ?>
             </div>
 
@@ -77,45 +78,5 @@
         </form>
 
     </div>
-    <script>
-        $(document).ready(function () {
-            $("#add-expense-form").submit(function (event) {
-                event.preventDefault(); // Prevent default form submission
-
-                let expenseName = $("#expense-name").val();
-                let amount = $("#amount").val();
-                let date = $("#date").val();
-                let groupId = $("#group").val();
-                let formData = { name: expenseName, amount: amount, date: date, group_id: groupId };
-
-                $.ajax({
-                    url: "/expenses", // API for handling expense creation
-                    type: "POST",
-                    data: formData,
-                    dataType: "json",
-                    success: function (response) {
-                        if (response.status === "success") {
-                            $("#success-message").text(response.message).removeClass("hidden"); // Show success message
-                            $("#error-name, #error-amount, #error-date, #error-group").text(""); // Clear errors
-                            $("#expense-name, #amount, #date, #group").val(""); // Clear input fields
-
-                            setTimeout(() => {
-                                window.location.href = "/expenses"; // Redirect after 1.5 sec
-                            }, 1500);
-                        } else {
-                            // Show validation errors
-                            $("#error-name").text(response.errors.name ? response.errors.name : "");
-                            $("#error-amount").text(response.errors.amount ? response.errors.amount : "");
-                            $("#error-date").text(response.errors.date ? response.errors.date : "");
-                            $("#error-group").text(response.errors.group_id ? response.errors.group_id : "");
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        console.error("Error:", error);
-                    }
-                });
-            });
-        });
-    </script>
 </main>
 <?php require base_path("views/partials/footer.php"); ?>

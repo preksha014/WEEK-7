@@ -8,7 +8,6 @@ $groups=$db->select('groups');
 // $groups=$db->query("SELECT * FROM groups")->get();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    header("Content-Type: application/json");
     $errors = [];
     if (!Validator::string($_POST['name'], 1, 1000)) {
         $errors['name'] = "Name is required";
@@ -19,23 +18,27 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (!Validator::validateDate($_POST['date'])) {
         $errors['date'] = "Enter valid Date";
     }
-    
+
     if(empty($_POST['group_id'])){
         $errors['group_id'] = "Please select a group";
     }
 
     if (!empty($errors)) {
-        echo json_encode(['status' => 'error', 'errors' => $errors]);
+        return view("expenses/create.view.php", [
+            'heading' => 'Add Expense',
+            'errors' => $errors,
+            'groups'=>$groups,
+        ]);
     }
     //dd($_POST);
     $db->insert('expenses',[
+
         'name' => $_POST['name'],
         'amount' => $_POST['amount'],
+
         'date' => $_POST['date'],
         'group_id' =>$_POST['group_id'],
     ]);
-
-    echo json_encode(['status'=> 'success']);
     // $db->query("INSERT INTO expenses(name, amount, group_id, date) VALUES (:name,:amount,:group_id,:date)", [
     //     'name' => $_POST['name'],
     //     'amount' => $_POST['amount'],

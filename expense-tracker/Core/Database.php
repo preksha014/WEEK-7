@@ -36,21 +36,28 @@ class Database
     public function select($table, $columns = ['*'], $where = []) {
         $columnList = implode(", ", $columns);
         $sql = "SELECT $columnList FROM $table";
-        
+    
         if (!empty($where)) {
             $whereClause = implode(" AND ", array_map(fn($key) => "$key = :$key", array_keys($where)));
             $sql .= " WHERE $whereClause";
         }
-        
+    
         $statement = $this->connection->prepare($sql);
         $statement->execute($where);
-        
+    
         // Fetch all results
-        $results = $statement->fetchAll();
-        
-        // Return single record if only one result exists
-        return count($results) === 1 ? $results[0] : $results;
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+    
+        // Return based on number of results
+        if (empty($results)) {
+            return [];  // No records found
+        } elseif (count($results) === 1) {
+            return $results[0];  // Return a single record as an associative array
+        }
+    
+        return $results; // Return all records
     }
+    
     
 
     public function insert($table,$data){
@@ -68,7 +75,6 @@ class Database
         $set = implode(", ", array_map(fn($key) => "$key = :$key", array_keys($data)));
         //dd($set);
         $sql = "UPDATE $table SET $set WHERE id = :id";
-        //dd($sql);
         $stmt = $this->connection->prepare($sql);
         //$data['id'] = $id;
         return $stmt->execute(['id'=>$id] + $data);

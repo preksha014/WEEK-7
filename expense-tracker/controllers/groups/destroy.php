@@ -4,24 +4,15 @@ use Core\Database;
 $config = require base_path('config.php');
 $db = new Database($config['database']);
 
-if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['id'])) {
-    $groupId = $_POST['id'];
+$groups=$db->select('groups',['*'],['id'=>$_POST['id']]);
+// $groups = $db->query('select * from groups where id = :id', [
+//     'id' => $_POST['id']
+// ])->findOrFail();
 
-    // Check if group exists
-    $group = $db->select('groups', ['*'], ['id' => $groupId]);
+$db->delete('groups',$_POST['id']);
+// $db->query('delete from groups where id = :id', [
+//     'id' => $_POST['id']
+// ]);
 
-    if (!$group) {
-        echo json_encode(["status" => "error", "message" => "Group not found"]);
-        exit;
-    }
-
-    // Delete group
-    $db->delete('groups',  $groupId);
-
-    echo json_encode(["status" => "success", "message" => "Group deleted successfully"]);
-    exit;
-}
-
-echo json_encode(["status" => "error", "message" => "Invalid request"]);
-exit;
-?>
+header('location: /groups');
+exit();

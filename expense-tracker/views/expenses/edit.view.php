@@ -77,27 +77,5 @@
         </form>
 
     </div>
-    <script>
-        document.getElementById("edit-expense-form").addEventListener("submit", function(event) {
-            event.preventDefault();
-
-            let formData = new FormData(this);
-
-            fetch(BASE_PATH + "expenses/update.php", {
-                    method: "POST",
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        window.location.href = "/expenses"; // Redirect after success
-                    } else {
-                        document.getElementById("error-message").textContent = data.error;
-                        document.getElementById("error-message").classList.remove("hidden");
-                    }
-                })
-                .catch(error => console.error("Error:", error));
-        });
-    </script>
 </main>
 <?php require base_path("views/partials/footer.php"); ?>
