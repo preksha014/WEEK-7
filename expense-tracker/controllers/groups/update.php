@@ -10,7 +10,7 @@ $groups=$db->select('groups',['*'],['id'=>$_POST['id']]);
 // $groups = $db->query('select * from groups where id = :id', [
 //     'id' => $_POST['id']
 // ])->findOrFail();
-
+//dd($groups);
 // validate the form
 $errors = [];
 if (!Validator::string($_POST['name'], 1, 1000)) {

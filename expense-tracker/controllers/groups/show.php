@@ -6,7 +6,6 @@ $db = new Database($config['database']);
 $groups=$db->select('groups');
 // $groups=$db->query("SELECT * FROM groups")->get();
 
-
 view("groups/show.view.php",[
     'heading'=>'Groups',
     'groups'=>$groups,

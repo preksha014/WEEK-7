@@ -36,16 +36,22 @@ class Database
     public function select($table, $columns = ['*'], $where = []) {
         $columnList = implode(", ", $columns);
         $sql = "SELECT $columnList FROM $table";
-        //dd($sql);
+        
         if (!empty($where)) {
             $whereClause = implode(" AND ", array_map(fn($key) => "$key = :$key", array_keys($where)));
             $sql .= " WHERE $whereClause";
         }
-        //dd($whereClause);
+        
         $statement = $this->connection->prepare($sql);
         $statement->execute($where);
-        return $statement->fetchAll();
+        
+        // Fetch all results
+        $results = $statement->fetchAll();
+        
+        // Return single record if only one result exists
+        return count($results) === 1 ? $results[0] : $results;
     }
+    
 
     public function insert($table,$data){
         $columns=implode(',',array_keys($data));
@@ -62,6 +68,7 @@ class Database
         $set = implode(", ", array_map(fn($key) => "$key = :$key", array_keys($data)));
         //dd($set);
         $sql = "UPDATE $table SET $set WHERE id = :id";
+        //dd($sql);
         $stmt = $this->connection->prepare($sql);
         //$data['id'] = $id;
         return $stmt->execute(['id'=>$id] + $data);
