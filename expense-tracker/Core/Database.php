@@ -33,30 +33,25 @@ class Database
         return $result;
     }
 
-    public function select($table, $columns = ['*'], $where = []) {
+    public function select($table, $columns = ['*'], $where = [], $single = false) {
         $columnList = implode(", ", $columns);
         $sql = "SELECT $columnList FROM $table";
-    
+        
         if (!empty($where)) {
             $whereClause = implode(" AND ", array_map(fn($key) => "$key = :$key", array_keys($where)));
             $sql .= " WHERE $whereClause";
         }
     
+        if ($single) {
+            $sql .= " LIMIT 1"; // Ensure only one record is fetched
+        }
+    
         $statement = $this->connection->prepare($sql);
         $statement->execute($where);
     
-        // Fetch all results
-        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $single ? $statement->fetch(PDO::FETCH_ASSOC) ?: null : $statement->fetchAll(PDO::FETCH_ASSOC);
+    }    
     
-        // Return based on number of results
-        if (empty($results)) {
-            return [];  // No records found
-        } elseif (count($results) === 1) {
-            return $results[0];  // Return a single record as an associative array
-        }
-    
-        return $results; // Return all records
-    }
     
     
 

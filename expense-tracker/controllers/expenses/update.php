@@ -6,7 +6,7 @@ $config = require base_path('config.php');
 $db = new Database($config['database']);
 
 // find the corresponding group
-$expense=$db->select('expenses',['*'],['id'=>$_POST['id']]);
+$expense=$db->select('expenses',['*'],['id'=>$_POST['id']],true);
 // $expense = $db->query('select * from expenses where id = :id', [
 //     'id' => $_POST['id']
 // ])->findOrFail();

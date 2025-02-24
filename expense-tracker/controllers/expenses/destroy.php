@@ -6,7 +6,7 @@ $config = require base_path('config.php');
 $db = new Database($config['database']);
 
 //Fetch particular expense by id from the database
-$expense=$db->select('expenses',['*'],['id'=>$_POST['id']]);
+$expense=$db->select('expenses',['*'],['id'=>$_POST['id']], true);
 // dd($expense);
 // $expense = $db->query('select * from expenses where id = :id', [
 //     'id' => $_POST['id']

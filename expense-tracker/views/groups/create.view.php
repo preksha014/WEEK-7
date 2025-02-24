@@ -24,5 +24,51 @@
             <p id="success-message" class="text-green-500 text-sm mt-2 hidden"></p>
         </form>
 </main>
+<script>
+    $(document).ready(function () {
+    $("#add-group-form").submit(function (e) {
+        e.preventDefault(); // Prevent default form submission
+
+        let formData = $(this).serialize();
+        let name = $("#text").val().trim();
+
+        // Clear previous errors
+        $("#error-name").text("");
+        $("#error-duplicate").text("");
+
+        // Client-side validation
+        if (name.length === 0) {
+            $("#error-name").text("Group name is required");
+            return;
+        }
+
+        $.ajax({
+            url: "/groups", // Adjust if needed
+            type: "POST",
+            data: formData,
+            dataType: "json",
+            success: function (response) {
+                if (response.status === "error") {
+                    if (response.errors.name) {
+                        $("#error-name").text(response.errors.name);
+                    }
+                    if (response.errors.duplicate) {
+                        $("#error-duplicate").text(response.errors.duplicate);
+                    }
+                } else {
+                    $("#success-message").removeClass("hidden").text(response.message);
+                    setTimeout(function () {
+                        window.location.href = "/groups";
+                    }, 2000); // Redirect after displaying success message
+                }
+            },
+            error: function () {
+                alert("An error occurred. Please try again.");
+            }
+        });
+    });
+});
+
+</script>
 
 <?php require BASE_PATH . "views/partials/footer.php"; ?>
