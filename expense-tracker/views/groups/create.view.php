@@ -21,16 +21,16 @@
     </div>
     <!-- Success Message -->
     <div id="success-message"
-            class="hidden fixed bottom-1 right-4 mb-4 p-4 text-sm text-green-800 rounded-lg bg-green-80 dark:bg-gray-800 dark:text-green-400"
-            role="alert">
-            Group created successfully!
-        </div>
+        class="hidden fixed bottom-4 right-4 mb-4 p-4 text-sm font-semibold text-green-900 bg-green-100 border border-green-400 rounded-lg shadow-lg dark:bg-gray-800 dark:text-green-300 dark:border-green-600 z-50 flex items-center space-x-2"
+        role="alert">
+        <span>Group created successfully!</span>
+    </div>
 </main>
 
 <script>
     $(document).ready(function () {
         // Initialize form validation
-        $("#groupForm").validate({
+        $("#createGroupForm").validate({
             rules: {
                 name: {
                     required: true,

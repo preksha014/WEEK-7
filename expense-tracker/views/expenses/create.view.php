@@ -77,12 +77,11 @@
             </button>
         </form>
     </div>
-    <!-- Success Message -->
-    <div id="success-message"
+     <!-- Success Message -->
+     <div id="success-message"
         class="hidden fixed bottom-1 right-4 mb-4 p-4 text-sm text-green-800 rounded-lg bg-green-80 dark:bg-gray-800 dark:text-green-400"
         role="alert">
         Expense added successfully!
-    </div>
 </main>
 
 <script>

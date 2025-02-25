@@ -54,11 +54,75 @@
         role="alert">
         Expense deleted successfully!
     </div>
+    <!-- Loading Spinner -->
+    <div id="loading-spinner" class="hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-700"></div>
+    </div>
 </main>
 <script>
     $(document).ready(function () {
+        // Function to fetch and update expenses
+        function fetchExpenses() {
+            $.ajax({
+                url: '/api/expenses',
+                type: 'GET',
+                beforeSend: function() {
+                    $('#loading-spinner').removeClass('hidden');
+                },
+                success: function(response) {
+                    const expensesList = $('#expenses-list');
+                    expensesList.empty();
+
+                    response.forEach(function(expense) {
+                        const expenseHtml = `
+                            <div class="expense-item bg-white p-4 rounded-lg shadow transition duration-200 ease-in-out transform hover:shadow-lg hover:bg-gray-100 hover:scale-103 flex justify-between items-center border border-gray-200"
+                                data-expense-id="${expense.id}">
+                                <div>
+                                    <p class="text-lg font-semibold text-gray-800">${expense.name}</p>
+                                    <p class="text-sm text-gray-600">Amount: <span
+                                            class="font-medium text-gray-700">₹${expense.amount}</span></p>
+                                    <p class="text-sm text-gray-600">Date: <span
+                                            class="font-medium">${expense.date}</span></p>
+                                    <p class="text-sm text-gray-600">Group: <span
+                                            class="font-medium">${expense.category || 'Unknown'}</span></p>
+                                </div>
+
+                                <div class="flex space-x-2">
+                                    <form method="POST" action="/expenses/edit">
+                                        <input type="hidden" name="id" value="${expense.id}">
+                                        <button type="submit"
+                                            class="inline-flex items-center justify-center rounded-md bg-gray-500 px-4 py-2 text-sm font-medium text-white shadow hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
+                                            Edit
+                                        </button>
+                                    </form>
+                                    <form class="delete-expense-form" method="POST" action="/expenses">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="id" value="${expense.id}">
+                                        <button type="submit"
+                                            class="inline-flex items-center justify-center rounded-md bg-gray-500 px-4 py-2 text-sm font-medium text-white shadow hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        `;
+                        expensesList.append(expenseHtml);
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching expenses:', error);
+                },
+                complete: function() {
+                    $('#loading-spinner').addClass('hidden');
+                }
+            });
+        }
+
+        // Fetch expenses every 30 seconds
+        setInterval(fetchExpenses, 30000);
+
         // Handle delete form submission
-        $('.delete-expense-form').on('submit', function (e) {
+        $(document).on('submit', '.delete-expense-form', function (e) {
             e.preventDefault();
 
             if (!confirm('Are you sure you want to delete this expense?')) {

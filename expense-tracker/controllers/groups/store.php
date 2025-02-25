@@ -18,18 +18,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $errors['duplicate'] = "This group name already exists.";
     }
 
-    // if (!empty($errors)) {
-    //     header('Content-Type: application/json');
-    //     http_response_code(422);
-    //     echo json_encode($errors);
-    //     exit;
-    // }
-
     $db->insert('groups',['name' => $_POST['name']]);
-    
-    //header('Content-Type: application/json');
-    //echo json_encode(['success' => true]);
-    //exit;
+
 }
 
 header('location: /groups');

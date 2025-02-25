@@ -10,7 +10,7 @@
                 <h2 class="text-xl font-bold">Total Expense</h2>
                 <p class="text-xl">₹<?= $totalExpense['total_expense'] ?? 0; ?></p>
             </div>
-
+    
             <div class="bg-gray-500 text-white p-4 rounded-lg shadow-md hover:bg-green-600 hover:scale-110 transition-all duration-300 hover:shadow-xl">
                 <h2 class="text-xl font-bold">Maximum Expense</h2>
                 <p class="text-xl">₹<?= $maxExpense['amount'] ?? 0; ?></p>

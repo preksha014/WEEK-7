@@ -1,6 +1,31 @@
 <?php
-use Core\Session;
 use Core\Response;
+
+$groupEmojis = [
+    "Food" => "🍕",
+    "Drinks" => "🥤",
+    "Transport" => "🚗",
+    "Shopping" => "🛍️",
+    "Bills" => "💡",
+    "Entertainment" => "🎬",
+    "Health" => "🏥",
+    "Salary" => "💰",
+    "Rent" => "🏠",
+    "Travel" => "✈️",
+    "Education" => "📚",
+    "Gifts" => "🎁",
+    "Pets" => "🐶",
+    "Groceries" => "🥦",
+    "Investments" => "📈",
+    "Subscriptions" => "🎟️",
+    "Others" => "📦"
+];
+
+function getGroupEmoji($groupName) {
+    global $groupEmojis;
+    return $groupEmojis[$groupName] ?? "📦"; // Default emoji if not found
+}
+
 function dd($val)
 {
     echo '<pre>';
