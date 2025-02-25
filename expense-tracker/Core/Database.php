@@ -33,27 +33,19 @@ class Database
         return $result;
     }
 
-    public function select($table, $columns = ['*'], $where = [], $single = false) {
+    public function select($table, $columns = ['*'], $where = []) {
         $columnList = implode(", ", $columns);
         $sql = "SELECT $columnList FROM $table";
-        
+        //dd($sql);
         if (!empty($where)) {
             $whereClause = implode(" AND ", array_map(fn($key) => "$key = :$key", array_keys($where)));
             $sql .= " WHERE $whereClause";
         }
-    
-        if ($single) {
-            $sql .= " LIMIT 1"; // Ensure only one record is fetched
-        }
-    
+        //dd($whereClause);
         $statement = $this->connection->prepare($sql);
         $statement->execute($where);
-    
-        return $single ? $statement->fetch(PDO::FETCH_ASSOC) ?: null : $statement->fetchAll(PDO::FETCH_ASSOC);
-    }    
-    
-    
-    
+        return $statement->fetchAll();
+    }
 
     public function insert($table,$data){
         $columns=implode(',',array_keys($data));

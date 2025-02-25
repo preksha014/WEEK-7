@@ -9,81 +9,19 @@
             <div class="bg-gray-500 text-white p-4 rounded-lg shadow-md hover:bg-blue-600 hover:scale-110 transition-all duration-300 hover:shadow-xl">
                 <h2 class="text-xl font-bold">Total Expense</h2>
                 <p class="text-xl">₹<?= $totalExpense['total_expense'] ?? 0; ?></p>
-
-
-
-
-
-
-
-
-
-
-
-
             </div>
 
             <div class="bg-gray-500 text-white p-4 rounded-lg shadow-md hover:bg-green-600 hover:scale-110 transition-all duration-300 hover:shadow-xl">
                 <h2 class="text-xl font-bold">Maximum Expense</h2>
                 <p class="text-xl">₹<?= $maxExpense['amount'] ?? 0; ?></p>
                 <p class="text-sm"> <?= $maxExpense['name'] ?? 'N/A'; ?></p>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
             <div class="bg-gray-500 text-white p-4 rounded-lg shadow-md hover:bg-yellow-600 hover:scale-110 transition-all duration-300 hover:shadow-xl">
                 <h2 class="text-xl font-bold">Monthly Expense</h2>
                 <?php foreach ($monthlyExpense as $month) : ?>
                     <p><?= $month['month']; ?>: ₹<?= $month['total_monthly_expense']; ?> (Max: ₹<?= $month['max_monthly_expense'] ?? 0; ?>)</p>
                 <?php endforeach; ?>
-
-
-
-
             </div>
         </div>
 

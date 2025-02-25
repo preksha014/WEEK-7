@@ -4,10 +4,10 @@
 
 <main>
     <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <div class="mt-4 space-y-4">
+        <div class="mt-4 space-y-4" id="expenses-list">
             <?php foreach ($expenses as $expense): ?>
-                <div
-                    class="bg-white p-4 rounded-lg shadow transition duration-200 ease-in-out transform hover:shadow-lg hover:bg-gray-100 hover:scale-103 flex justify-between items-center border border-gray-200">
+                <div class="expense-item bg-white p-4 rounded-lg shadow transition duration-200 ease-in-out transform hover:shadow-lg hover:bg-gray-100 hover:scale-103 flex justify-between items-center border border-gray-200"
+                    data-expense-id="<?= $expense['id'] ?>">
                     <div>
                         <p class="text-lg font-semibold text-gray-800"><?= htmlspecialchars($expense['name']) ?></p>
                         <p class="text-sm text-gray-600">Amount: <span
@@ -22,15 +22,15 @@
                         <form method="POST" action="/expenses/edit">
                             <input type="hidden" name="id" value="<?= $expense['id'] ?>">
                             <button type="submit"
-                            class="inline-flex items-center justify-center rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
+                                class="inline-flex items-center justify-center rounded-md bg-gray-500 px-4 py-2 text-sm font-medium text-white shadow hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
                                 Edit
                             </button>
                         </form>
-                        <form method="POST" action="/expenses">
+                        <form class="delete-expense-form" method="POST" action="/expenses">
                             <input type="hidden" name="_method" value="DELETE">
                             <input type="hidden" name="id" value="<?= $expense['id'] ?>">
                             <button type="submit"
-                            class="inline-flex items-center justify-center rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
+                                class="inline-flex items-center justify-center rounded-md bg-gray-500 px-4 py-2 text-sm font-medium text-white shadow hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500">
                                 Delete
                             </button>
                         </form>
@@ -47,8 +47,56 @@
                 </button>
             </a>
         </div>
-
     </div>
-
+    <!-- Success Message -->
+    <div id="delete-success-message"
+        class="hidden fixed bottom-1 right-4 mb-4 p-4 text-sm text-green-800 rounded-lg bg-green-80 dark:bg-gray-800 dark:text-green-400"
+        role="alert">
+        Expense deleted successfully!
+    </div>
 </main>
+<script>
+    $(document).ready(function () {
+        // Handle delete form submission
+        $('.delete-expense-form').on('submit', function (e) {
+            e.preventDefault();
+
+            if (!confirm('Are you sure you want to delete this expense?')) {
+                return;
+            }
+
+            const form = $(this);
+            const expenseId = form.find('input[name="id"]').val();
+            const expenseItem = $(`.expense-item[data-expense-id="${expenseId}"]`);
+
+            $.ajax({
+                url: '/expenses',
+                type: 'POST',
+                data: form.serialize(),
+                success: function (response) {
+                    // Remove the expense item from the DOM with animation
+                    expenseItem.fadeOut(300, function () {
+                        $(this).remove();
+                    });
+
+                    // Show success message
+                    const successMessage = $('#delete-success-message');
+                    successMessage.removeClass('hidden').fadeIn();
+
+                    // Hide success message after 3 seconds
+                    setTimeout(function () {
+                        successMessage.fadeOut(300, function () {
+                            $(this).addClass('hidden');
+                        });
+                    }, 3000);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                    alert('An error occurred while deleting the expense: ' + error);
+                }
+            });
+        });
+    });
+</script>
+
 <?php require base_path("views/partials/footer.php"); ?>
